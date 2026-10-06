@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: dpy-core-api
+    env: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: dpy-core-db
+          property: connectionString
+
+databases:
+  - name: dpy-core-db
+    databaseName: dpy_core
+    user: dpy_core_user
+    plan: free
+    region: ohio
