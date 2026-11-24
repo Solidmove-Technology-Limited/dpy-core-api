@@ -5,9 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 
 from app.db import engine, Base
-from app.routes import auth, wallet, transactions, users, chat
-
-Base.metadata.create_all(bind=engine)
+from app.routes import auth, wallet, transactions, users
 
 app = FastAPI(
     title="DPY Core API",
@@ -15,9 +13,7 @@ app = FastAPI(
     version="1.1.0"
 )
 
-# CORS: explicit origin allowlist. The previous configuration paired
-# allow_origins=["*"] with allow_credentials=True, which browsers reject and
-# which exposes credentialed responses to any origin.
+# CORS: explicit origin allowlist.
 _origins = [o.strip() for o in os.getenv("DPY_ALLOWED_ORIGINS", "").split(",") if o.strip()]
 if _origins:
     app.add_middleware(
@@ -55,4 +51,3 @@ app.include_router(auth.router, prefix="/auth", tags=["auth"])
 app.include_router(wallet.router, prefix="/wallet", tags=["wallet"])
 app.include_router(transactions.router, prefix="/transactions", tags=["transactions"])
 app.include_router(users.router, prefix="/users", tags=["users"])
-app.include_router(chat.router, tags=["chat"])
