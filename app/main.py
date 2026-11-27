@@ -4,7 +4,6 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 
-from app.db import engine, Base
 from app.routes import auth, wallet, transactions, users
 
 app = FastAPI(
